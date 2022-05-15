@@ -14,7 +14,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/vehicle/")
 public class CarController {
 
     @Autowired
@@ -34,6 +34,14 @@ public class CarController {
                 .orElseThrow( () -> new ResourceNotFoundException("Car not found for this id: " + idExhibition));
         return ResponseEntity.ok().body(car);
     }
+    // get in
+    @GetMapping("/cars/{id_exhibition}/hopon")
+    public ResponseEntity<String> getInTheCar(@PathVariable(value = "id_exhibition") int idExhibition)
+            throws ConfigDataResourceNotFoundException, ResourceNotFoundException {
+        Car car = carRepository.findById(idExhibition)
+                .orElseThrow( () -> new ResourceNotFoundException("Car not found for this id: " + idExhibition));
+        return ResponseEntity.ok().body(car.sound());
+    }
 
     //save car
     @PostMapping("/cars")
@@ -49,7 +57,7 @@ public class CarController {
                 .orElseThrow(() -> new ResourceNotFoundException("Car not found for this id :: " + idExhibition));
 
         car.setId_exhibition(carDetails.getId_exhibition());
-        car.setModel(carDetails.getModel());
+        car.setBrand(carDetails.getBrand());
         final Car updatedCar = carRepository.save(car);
         return ResponseEntity.ok(updatedCar);
     }

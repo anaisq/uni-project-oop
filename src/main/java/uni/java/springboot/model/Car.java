@@ -5,23 +5,20 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Cars")
-public class Car {
+public class Car extends Vehicle{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id_exhibition;
 
-    @Column(name = "model")
-    protected String model;
+    @Column(name = "brand")
+    protected String brand;
 
 
-    public Car() {
-        super();
-    }
+    public Car() { }
 
-    public Car(String model) {
-        super();
-        this.model = model;
+    public Car(String brand) {
+        this.brand = brand;
     }
 
     public int getId_exhibition() {
@@ -32,11 +29,11 @@ public class Car {
         this.id_exhibition = id_exhibition;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setBrand(String brand) {this.brand = brand;}
+
+    public String getBrand() {
+        return brand;
     }
 
-    public String getModel() {
-        return model;
-    }
+    public String sound(){return "The car does honk-honk."; }
 }
