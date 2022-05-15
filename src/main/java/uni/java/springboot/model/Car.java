@@ -2,38 +2,49 @@ package uni.java.springboot.model;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Cars")
 public class Car extends Vehicle{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id_exhibition;
-
-    @Column(name = "brand")
-    protected String brand;
-
+    @Column(name = "engine")
+    protected String engine;
 
     public Car() { }
 
-    public Car(String brand) {
-        this.brand = brand;
+    public Car(String brand, String model,String engine) {
+        super(brand, model);
+        this.engine = engine;
     }
 
-    public int getId_exhibition() {
-        return id_exhibition;
+    public String action(){return "The car does honk-honk."; }
+
+    public String getEngine() {
+        return engine;
     }
 
-    public void setId_exhibition(int id_exhibition) {
-        this.id_exhibition = id_exhibition;
+    public void setEngine(String engine) {
+        this.engine = engine;
     }
 
-    public void setBrand(String brand) {this.brand = brand;}
-
-    public String getBrand() {
-        return brand;
+    @Override
+    public String toString() {
+        return super.toString() + "\n" +"Car{" +
+                "engine='" + engine + '\'' +
+                '}';
     }
 
-    public String sound(){return "The car does honk-honk."; }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(engine, car.engine);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(engine);
+    }
 }
