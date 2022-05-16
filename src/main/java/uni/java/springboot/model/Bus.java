@@ -1,5 +1,6 @@
 package uni.java.springboot.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Objects;
 @Table(name = "Bus")
 public class Bus extends Vehicle{
 
+    @Column(name = "seatNumber")
     private int seatNumber;
 
     public Bus() {}

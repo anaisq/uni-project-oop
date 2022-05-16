@@ -37,6 +37,7 @@ public class CarController {
             vehicles.add(v);
         }
         SingletonWriteCSV.getInstance(vehicles);
+        this.auditRepository.save(new Audit("getAllCars", new Timestamp(System.currentTimeMillis()) ));
            return carRepository.findAll();
         }
 
@@ -46,14 +47,16 @@ public class CarController {
             throws ConfigDataResourceNotFoundException, ResourceNotFoundException {
         Car car = carRepository.findById(idExhibition)
                 .orElseThrow( () -> new ResourceNotFoundException("Car not found for this id: " + idExhibition));
+        this.auditRepository.save(new Audit("getCarById", new Timestamp(System.currentTimeMillis()) ));
         return ResponseEntity.ok().body(car);
     }
-    // get in
+    // get action
     @GetMapping("/cars/{id_exhibition}/action")
-    public ResponseEntity<String> getInTheCar(@PathVariable(value = "id_exhibition") int idExhibition)
+    public ResponseEntity<String> actionCar(@PathVariable(value = "id_exhibition") int idExhibition)
             throws ConfigDataResourceNotFoundException, ResourceNotFoundException {
         Car car = carRepository.findById(idExhibition)
                 .orElseThrow( () -> new ResourceNotFoundException("Car not found for this id: " + idExhibition));
+        this.auditRepository.save(new Audit("getCarAction", new Timestamp(System.currentTimeMillis()) ));
         return ResponseEntity.ok().body(car.action());
     }
 
@@ -69,10 +72,20 @@ public class CarController {
             this.auditRepository.save(new Audit("getAllAudis", new Timestamp(System.currentTimeMillis()) ));
         }
     }
+    //get in
+    @GetMapping("/cars/{id_exhibition}/getIn")
+    public ResponseEntity<String> getInTheCar(@PathVariable(value = "id_exhibition") int idExhibition)
+            throws ConfigDataResourceNotFoundException, ResourceNotFoundException {
+        Car car = carRepository.findById(idExhibition)
+                .orElseThrow( () -> new ResourceNotFoundException("Car not found for this id: " + idExhibition));
+        this.auditRepository.save(new Audit("getInCar", new Timestamp(System.currentTimeMillis()) ));
+        return ResponseEntity.ok().body(car.openVehicle());
+    }
 
     //save car
     @PostMapping("/cars")
     public Car createCar(@RequestBody Car car){
+        this.auditRepository.save(new Audit("postCar", new Timestamp(System.currentTimeMillis()) ));
         return carRepository.save(car);
     }
 
@@ -86,6 +99,7 @@ public class CarController {
         car.setId_exhibition(carDetails.getId_exhibition());
         car.setEngine(carDetails.getEngine());
         final Car updatedCar = carRepository.save(car);
+        this.auditRepository.save(new Audit("updateCar", new Timestamp(System.currentTimeMillis()) ));
         return ResponseEntity.ok(updatedCar);
     }
 
@@ -99,6 +113,7 @@ public class CarController {
         carRepository.delete(car);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
+        this.auditRepository.save(new Audit("deleteCar", new Timestamp(System.currentTimeMillis()) ));
         return response;
     }
 }
