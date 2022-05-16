@@ -31,9 +31,9 @@ public class CarController {
     //get cars
     @GetMapping("/cars")
     public List<Car> getAllCar(){
-        List<Vehicle> vehicles = new ArrayList<Vehicle>();
+        List<Vehicle> vehicles = new ArrayList<>();
         for(Car ob:carRepository.findAll()){
-            Vehicle v = (Vehicle) ob;
+            Vehicle v = ob;
             vehicles.add(v);
         }
         SingletonWriteCSV.getInstance(vehicles);

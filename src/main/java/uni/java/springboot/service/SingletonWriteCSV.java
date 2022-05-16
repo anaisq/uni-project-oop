@@ -11,40 +11,45 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class SingletonWriteCSV {
+    private static SingletonWriteCSV sg;
+
     private SingletonWriteCSV(List<Vehicle> vehicles) {
         StringBuilder stringBuilder = new StringBuilder();
-        int nr =1;
-        for(Vehicle v: vehicles){
-            stringBuilder.append("Vehicle " + nr + "\n"  );
+        int nr = 1;
+        for (Vehicle v : vehicles) {
+            stringBuilder.append("Vehicle " + nr + "\n");
             stringBuilder.append(v.getId_exhibition() + ", ");
             stringBuilder.append(v.getBrand() + ", ");
             stringBuilder.append(v.getModel() + ", ");
 
-            if(v instanceof Car){
-                stringBuilder.append( ((Car) v).getEngine() + ";\n");
-            }
-            else if (v instanceof  Boat){
-                stringBuilder.append( ((Boat) v).getBoatMotion()  + ";\n");
-            }
-            else{
-                stringBuilder.append( ((Bus) v).getSeatNumber() + ";\n");
+            if (v instanceof Car) {
+                stringBuilder.append(((Car) v).getEngine() + ";\n");
+            } else if (v instanceof Boat) {
+                stringBuilder.append(((Boat) v).getBoatMotion() + ";\n");
+            } else {
+                stringBuilder.append(((Bus) v).getSeatNumber() + ";\n");
             }
             nr++;
 
         }
 
-         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
-        try(FileWriter writer = new FileWriter("src\\main\\resources\\static\\vehicle_"+timestamp+".csv")) {
+        try (FileWriter writer = new FileWriter("src\\main\\resources\\static\\vehicle_" + timestamp + ".csv")) {
             writer.write(stringBuilder.toString());
             System.out.println("File created");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Something went wrong " + e);
         }
 
 
     }
-        public static SingletonWriteCSV getInstance(List<Vehicle> vehicle){
-        return new SingletonWriteCSV(vehicle);
+
+    public static SingletonWriteCSV getInstance(List<Vehicle> vehicle) {
+        if (sg == null)
+            sg = new SingletonWriteCSV(vehicle);
+        return sg;
+
     }
+
 }
