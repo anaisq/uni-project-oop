@@ -28,7 +28,7 @@ public class Vehicle {
         if (x.nextBoolean() == true ) {
             return "Someone's in the car.";
         } else {
-            return "You can go inside, the car is empty";
+            return "You can go inside, the vehicle is empty";
         }
     }
 
